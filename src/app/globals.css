@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-paper: #f5f3ef;
+  --color-paper-strong: #ebe6de;
+  --color-ink: #111111;
+  --color-muted: #5f5a54;
+  --color-line: rgba(17, 17, 17, 0.12);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-cormorant);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --font-sans: var(--font-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.92), transparent 40%),
+    linear-gradient(180deg, #faf8f4 0%, #f3efe8 100%);
+  color: var(--color-ink);
+}
+
+a,
+button {
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.grain {
+  background-image:
+    linear-gradient(rgba(17, 17, 17, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.015) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.shell {
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 2rem;
+  }
+}
+
+.section-space {
+  padding-block: 4rem;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.display-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 0.95rem 1.4rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.button-primary:hover {
+  opacity: 0.88;
+}
+
+.button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--color-ink);
+  padding: 0.95rem 1.4rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.button-secondary:hover {
+  border-color: var(--color-ink);
+}
+
+.panel {
+  border: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(10px);
+}
+
+.field {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.95rem 1rem;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.field:focus {
+  border-color: var(--color-ink);
+}
+
+.editorial-image {
+  position: relative;
+  overflow: hidden;
+  background: #ded9d1;
+}
+
+.editorial-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.copy-muted {
+  color: var(--color-muted);
 }

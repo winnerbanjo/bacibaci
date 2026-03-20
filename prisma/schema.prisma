@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Booking {
+  id           String   @id
+  name         String
+  email        String
+  phone        String
+  service      String
+  date         String
+  time         String
+  type         String
+  notes        String?
+  paymentProof String?
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+  brand        String   @default("dionbaci")
+}
+
+model Item {
+  id          String   @id
+  name        String
+  image       String
+  category    String
+  type        String
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  brand       String   @default("dionbaci")
+  price       Decimal? @db.Decimal(10, 2)
+  sizes       String[]
+  description String?
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime
+}
+
+model Subscriber {
+  id        String   @id
+  email     String   @unique
+  createdAt DateTime @default(now())
+  brand     String   @default("dionbaci")
+}
