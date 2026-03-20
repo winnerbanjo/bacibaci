@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { SectionReveal } from "@/components/section-reveal";
+import { SizeGuide } from "@/components/size-guide";
 import { formatPrice } from "@/lib/catalog-utils";
 import { getDisplayItems } from "@/lib/catalog";
 
@@ -21,6 +22,9 @@ export default async function EssentialsPage() {
           <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-neutral-600">
             Daily structure. Refined basics made to sit right, wear well, and last.
           </p>
+        </SectionReveal>
+        <SectionReveal className="mb-10">
+          <SizeGuide description="Use the bacibaci chart before opening any essentials product page." />
         </SectionReveal>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {items.map((item) => (

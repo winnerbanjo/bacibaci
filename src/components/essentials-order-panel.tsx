@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { formatPrice } from "@/lib/catalog-utils";
+import { SizeGuide } from "@/components/size-guide";
 
 const sizes = ["S", "M", "L", "XL"];
 
@@ -149,6 +150,11 @@ export function EssentialsOrderPanel({
             ))}
           </div>
         </div>
+
+        <SizeGuide
+          title="Find your size"
+          description="Use the bacibaci size guide before selecting your essentials size."
+        />
 
         <div>
           <p className="mb-4 text-xs uppercase tracking-[0.22em] text-black/55">Quantity</p>
