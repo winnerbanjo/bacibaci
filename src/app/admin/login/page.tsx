@@ -7,15 +7,30 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function handleLogin() {
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSCODE) {
+  async function handleLogin() {
+    setLoading(true);
+    setError(null);
+
+    const response = await fetch("/api/admin/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    const data = await response.json().catch(() => null);
+
+    if (response.ok) {
       localStorage.setItem("admin-auth", "true");
       router.push("/admin");
       return;
     }
 
-    setError("Wrong passcode");
+    setError(data?.error ?? "Wrong passcode");
+    setLoading(false);
   }
 
   return (
@@ -32,8 +47,8 @@ export default function AdminLoginPage() {
             onChange={(event) => setPassword(event.target.value)}
           />
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
-          <button type="button" className="button-primary w-full" onClick={handleLogin}>
-            Login
+          <button type="button" className="button-primary w-full" onClick={() => void handleLogin()} disabled={loading}>
+            {loading ? "Checking..." : "Login"}
           </button>
         </div>
       </div>
