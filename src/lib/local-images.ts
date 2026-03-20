@@ -10,6 +10,11 @@ export type LocalImageItem = {
   src: string;
 };
 
+export type FrontpageImageItem = {
+  src: string;
+  name: string;
+};
+
 function toLabel(value: string) {
   return value
     .replace(/\.[^/.]+$/, "")
@@ -30,10 +35,20 @@ async function readFolder(folder: string) {
     const files = await readdir(folderPath);
     return files
       .filter((file) => !file.startsWith("."))
+      .filter((file) => /\.(png|jpe?g|webp|avif)$/i.test(file))
       .sort((left, right) => left.localeCompare(right));
   } catch {
     return [];
   }
+}
+
+export async function getFrontpageImages(limit = 4): Promise<FrontpageImageItem[]> {
+  const files = await readFolder("frontpage");
+
+  return files.slice(0, limit).map((file, index) => ({
+    src: `/images/frontpage/${file}`,
+    name: `Frontpage ${index + 1}`,
+  }));
 }
 
 export async function getHeroImage() {
@@ -46,7 +61,15 @@ export async function getHeroImage() {
 export async function getLocalCategoryItems(
   category: Exclude<ImageCategory, "hero" | "lookbook">
 ): Promise<LocalImageItem[]> {
-  const files = await readFolder(category);
+  const allFiles = await readFolder(category);
+  const files =
+    category === "suits"
+      ? allFiles.filter((file) => /suit/i.test(file))
+      : category === "evening"
+        ? allFiles.filter((file) => /evening/i.test(file))
+        : category === "essentials"
+          ? allFiles.filter((file) => /essential/i.test(file))
+          : allFiles;
 
   return files.map((file) => {
     const cleaned = toLabel(file);

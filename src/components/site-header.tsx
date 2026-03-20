@@ -54,9 +54,6 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <Link href="/gift-card" className="button-secondary hidden md:inline-flex">
-            Gift Card
-          </Link>
         </div>
       </header>
 
@@ -80,9 +77,6 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <Link href="/gift-card" onClick={() => setOpen(false)} className="block border-b border-[var(--color-line)] py-4 text-base uppercase tracking-[0.18em]">
-              GIFT CARD
-            </Link>
           </nav>
         </aside>
       </div>

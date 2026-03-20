@@ -5,7 +5,7 @@ export default function TermsPage() {
         <p className="eyebrow">terms</p>
         <h1 className="display-title mt-3 text-6xl">terms of service</h1>
         <p className="mt-6 text-sm leading-8 text-[var(--color-muted)]">
-          All bacibaci orders and fitting requests are subject to availability,
+          All Baci Baci orders and fitting requests are subject to availability,
           confirmation, and final consultation approval.
         </p>
       </div>

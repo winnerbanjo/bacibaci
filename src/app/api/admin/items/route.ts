@@ -3,7 +3,8 @@ import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 
 import { BRAND } from "@/lib/brand";
-import { createItemSlug, getItems, parseSizes } from "@/lib/catalog";
+import { getItems } from "@/lib/catalog";
+import { createItemSlug, parseSizes } from "@/lib/catalog-utils";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {

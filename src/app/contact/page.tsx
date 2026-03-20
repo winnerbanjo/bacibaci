@@ -4,7 +4,7 @@ export default function ContactPage() {
       <div className="shell grid gap-10 lg:grid-cols-2">
         <div>
           <p className="eyebrow">contact</p>
-          <h1 className="display-title mt-3 text-6xl sm:text-7xl">reach bacibaci</h1>
+          <h1 className="display-title mt-3 text-6xl sm:text-7xl">reach Baci Baci</h1>
         </div>
         <div className="panel space-y-6 p-8">
           <div>

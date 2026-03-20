@@ -1,10 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getManItems } from "@/lib/local-images";
+import { SectionReveal } from "@/components/section-reveal";
+import { getDisplayItems } from "@/lib/catalog";
 
 export default async function ManPage() {
-  const items = await getManItems();
+  const [suits, essentials] = await Promise.all([
+    getDisplayItems("suits"),
+    getDisplayItems("essentials"),
+  ]);
+  const items = [...suits, ...essentials];
 
   return (
     <section className="section-space">
@@ -13,9 +18,10 @@ export default async function ManPage() {
         <h1 className="display-title mt-3 text-6xl sm:text-7xl">suits and mens essentials</h1>
         <div className="mt-10 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {items.map((item) => (
-            <article key={item.slug} className="group">
+            <SectionReveal key={item.slug}>
+            <article className="group">
               <div className="editorial-image aspect-[4/5]">
-                <Image src={item.src} alt={item.name} fill className="object-cover transition-all duration-300 group-hover:scale-[1.02]" sizes="33vw" />
+                <Image src={item.image} alt={item.name} fill className="object-cover object-[center_top] transition-all duration-300" sizes="33vw" />
               </div>
               <div className="mt-4 flex items-start justify-between gap-4">
                 <div>
@@ -27,6 +33,7 @@ export default async function ManPage() {
                 </Link>
               </div>
             </article>
+            </SectionReveal>
           ))}
         </div>
       </div>

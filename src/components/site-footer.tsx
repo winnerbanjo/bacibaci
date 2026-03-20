@@ -51,7 +51,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-[var(--color-line)] py-5 text-center text-xs uppercase tracking-[0.26em] text-[var(--color-muted)]">
-        bacibaci — refined form. controlled presence.
+        Baci Baci — refined form. controlled presence.
       </div>
     </footer>
   );

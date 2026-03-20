@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
       <div className="shell flex min-h-[70vh] items-center justify-center">
         <div className="panel w-full max-w-md space-y-5 p-8">
           <p className="eyebrow">admin</p>
-          <h1 className="display-title text-5xl lowercase">bacibaci</h1>
+          <h1 className="display-title text-5xl">Baci Baci</h1>
           <input
             className="field"
             type="password"

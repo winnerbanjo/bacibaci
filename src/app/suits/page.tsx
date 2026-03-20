@@ -1,34 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getLocalCategoryItems } from "@/lib/local-images";
+import { SectionReveal } from "@/components/section-reveal";
+import { getDisplayItems } from "@/lib/catalog";
 
 export default async function SuitsPage() {
-  const items = await getLocalCategoryItems("suits");
+  const items = await getDisplayItems("suits");
 
   return (
     <section className="section-space">
       <div className="shell">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <SectionReveal className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="eyebrow">suits</p>
             <h1 className="display-title mt-3 text-6xl sm:text-7xl">
               architected tailoring
             </h1>
           </div>
-          <p className="max-w-2xl text-sm leading-7 text-[var(--color-muted)]">
-            Local bacibaci suit imagery loaded directly from /public/images/suits.
+          <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-neutral-600">
+            Built with precision. Every piece is measured, refined, and structured to hold its form.
           </p>
-        </div>
+        </SectionReveal>
         <div className="grid gap-10 md:grid-cols-2">
           {items.map((item) => (
-            <article key={item.slug} className="group">
+            <SectionReveal key={item.slug}>
+            <article className="group">
               <div className="editorial-image aspect-[4/5]">
                 <Image
-                  src={item.src}
+                  src={item.image}
                   alt={item.name}
                   fill
-                  className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
+                  className="object-cover object-[center_top] transition-all duration-300"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
@@ -42,6 +44,7 @@ export default async function SuitsPage() {
                 </Link>
               </div>
             </article>
+            </SectionReveal>
           ))}
         </div>
       </div>

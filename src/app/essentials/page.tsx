@@ -1,35 +1,37 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { SectionReveal } from "@/components/section-reveal";
 import { WHATSAPP_NUMBER } from "@/lib/brand";
-import { getLocalCategoryItems } from "@/lib/local-images";
+import { getDisplayItems } from "@/lib/catalog";
 
 export default async function EssentialsPage() {
-  const items = await getLocalCategoryItems("essentials");
+  const items = await getDisplayItems("essentials");
 
   return (
     <section className="section-space">
       <div className="shell">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <SectionReveal className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="eyebrow">essentials</p>
             <h1 className="display-title mt-3 text-6xl sm:text-7xl">
               everyday precision
             </h1>
           </div>
-          <p className="max-w-xl text-sm leading-7 text-[var(--color-muted)]">
-            Product names are derived from the local image filenames in /public/images/essentials.
+          <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-neutral-600">
+            Daily structure. Refined basics made to sit right, wear well, and last.
           </p>
-        </div>
+        </SectionReveal>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {items.map((item) => (
-            <article key={item.slug} className="group">
+            <SectionReveal key={item.slug}>
+            <article className="group">
               <div className="editorial-image aspect-[4/5]">
                 <Image
-                  src={item.src}
+                  src={item.image}
                   alt={item.name}
                   fill
-                  className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
+                  className="object-cover object-[center_top] transition-all duration-300"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
@@ -49,6 +51,7 @@ export default async function EssentialsPage() {
                 </Link>
               </div>
             </article>
+            </SectionReveal>
           ))}
         </div>
       </div>

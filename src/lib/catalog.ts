@@ -1,6 +1,9 @@
+import { randomUUID } from "crypto";
+
 import type { Item, Prisma } from "@prisma/client";
 
 import { BRAND } from "@/lib/brand";
+import { getLocalCategoryItems } from "@/lib/local-images";
 import { prisma } from "@/lib/prisma";
 
 export type CatalogCategory = "suits" | "evening" | "essentials";
@@ -43,55 +46,158 @@ export function normalizeItem(item: Item): CatalogItem {
   };
 }
 
-export function createItemSlug(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
+export async function getItems(category?: CatalogCategory) {
+  try {
+    const items = await prisma.item.findMany({
+      where: {
+        brand: BRAND,
+        ...(category ? { category } : {}),
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return items.map(normalizeItem);
+  } catch (error) {
+    console.error("GET ITEMS ERROR:", error);
+    return [];
+  }
 }
 
-export function parseSizes(value: string) {
-  return value
-    .split(",")
-    .map((size) => size.trim().toUpperCase())
-    .filter(Boolean);
-}
+async function syncEssentialsFromImages() {
+  const localItems = await getLocalCategoryItems("essentials");
 
-export function formatPrice(value: number | null) {
-  if (value === null) {
-    return "Price on request";
+  if (!localItems.length) {
+    return;
   }
 
-  return new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
-
-export async function getItems(category?: CatalogCategory) {
-  const items = await prisma.item.findMany({
+  const existing = await prisma.item.findMany({
     where: {
       brand: BRAND,
-      ...(category ? { category } : {}),
+      category: "essentials",
     },
-    orderBy: {
-      createdAt: "desc",
+    select: {
+      slug: true,
     },
   });
 
-  return items.map(normalizeItem);
+  const existingSlugs = new Set(existing.map((item) => item.slug));
+  const missing = localItems.filter((item) => !existingSlugs.has(item.slug));
+
+  if (!missing.length) {
+    return;
+  }
+
+  await prisma.item.createMany({
+    data: missing.map((item) => ({
+      id: randomUUID(),
+      brand: BRAND,
+      name: item.name,
+      slug: item.slug,
+      image: item.src,
+      category: "essentials",
+      type: "ready",
+      sizes: [],
+      description: null,
+      price: null,
+    })),
+  });
+}
+
+function resolveImage(category: CatalogCategory, image: string, localImages: string[], index: number) {
+  if (image?.startsWith("/images/")) {
+    return image;
+  }
+
+  const localMatch = localImages[index];
+
+  if (localMatch) {
+    return localMatch;
+  }
+
+  return image;
+}
+
+export async function getDisplayItems(category: CatalogCategory) {
+  if (category === "essentials") {
+    await syncEssentialsFromImages();
+  }
+
+  const [databaseItems, localItems] = await Promise.all([
+    getItems(category),
+    getLocalCategoryItems(category),
+  ]);
+
+  if (!databaseItems.length) {
+    return localItems.map((item) => ({
+      id: item.slug,
+      name: item.name,
+      slug: item.slug,
+      image: item.src,
+      category,
+      type: category === "essentials" ? "ready" : "custom",
+      brand: BRAND,
+      description: null,
+      sizes: [],
+      price: null,
+      createdAt: new Date(0).toISOString(),
+    }));
+  }
+
+  const localSources = localItems.map((item) => item.src);
+
+  return databaseItems.map((item, index) => ({
+    ...item,
+    image: resolveImage(category, item.image, localSources, index),
+  }));
 }
 
 export async function getItemBySlug(slug: string) {
-  const item = await prisma.item.findFirst({
-    where: {
-      brand: BRAND,
-      slug,
-    },
-  });
+  try {
+    const item = await prisma.item.findFirst({
+      where: {
+        brand: BRAND,
+        slug,
+      },
+    });
 
-  return item ? normalizeItem(item) : null;
+    return item ? normalizeItem(item) : null;
+  } catch (error) {
+    console.error("GET ITEM BY SLUG ERROR:", error);
+    return null;
+  }
+}
+
+export async function getDisplayItemBySlug(slug: string) {
+  const item = await getItemBySlug(slug);
+
+  if (item) {
+    const localItems = await getLocalCategoryItems(item.category);
+    return {
+      ...item,
+      image: resolveImage(item.category, item.image, localItems.map((entry) => entry.src), 0),
+    };
+  }
+
+  const localSuits = await getLocalCategoryItems("suits");
+  const fallback = localSuits.find((entry) => entry.slug === slug);
+
+  if (!fallback) {
+    return null;
+  }
+
+  return {
+    id: fallback.slug,
+    name: fallback.name,
+    slug: fallback.slug,
+    image: fallback.src,
+    category: "suits" as CatalogCategory,
+    type: "custom",
+    brand: BRAND,
+    description: null,
+    sizes: [],
+    price: null,
+    createdAt: new Date(0).toISOString(),
+  };
 }

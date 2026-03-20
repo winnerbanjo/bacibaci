@@ -47,7 +47,7 @@ export function NewsletterForm() {
         required
       />
       <button type="submit" className="button-primary w-full" disabled={loading}>
-        {loading ? "Joining..." : "Join Newsletter"}
+        {loading ? "Joining..." : "Join the list"}
       </button>
       {message ? <p className="text-xs uppercase tracking-[0.18em]">{message}</p> : null}
       {error ? <p className="text-xs uppercase tracking-[0.18em] text-red-600">{error}</p> : null}

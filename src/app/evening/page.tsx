@@ -1,29 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getLocalCategoryItems } from "@/lib/local-images";
+import { SectionReveal } from "@/components/section-reveal";
+import { getDisplayItems } from "@/lib/catalog";
 
 export default async function EveningPage() {
-  const items = await getLocalCategoryItems("evening");
+  const items = await getDisplayItems("evening");
 
   return (
     <section className="section-space">
       <div className="shell">
-        <div className="mb-10">
+        <SectionReveal className="mb-10">
           <p className="eyebrow">evening</p>
           <h1 className="display-title mt-3 text-6xl sm:text-7xl">
             controlled after dark
           </h1>
-        </div>
+          <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-neutral-600">
+            Designed for presence. Clean lines, balanced proportions, and a quiet finish.
+          </p>
+        </SectionReveal>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {items.map((item) => (
-            <article key={item.slug} className="group">
+            <SectionReveal key={item.slug}>
+            <article className="group">
               <div className="editorial-image aspect-[4/5]">
                 <Image
-                  src={item.src}
+                  src={item.image}
                   alt={item.name}
                   fill
-                  className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
+                  className="object-cover object-[center_top] transition-all duration-300"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
@@ -35,6 +40,7 @@ export default async function EveningPage() {
                 </Link>
               </div>
             </article>
+            </SectionReveal>
           ))}
         </div>
       </div>

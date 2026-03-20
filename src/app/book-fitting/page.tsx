@@ -8,7 +8,7 @@ export default function BookFittingPage() {
           <p className="eyebrow">book fitting</p>
           <h1 className="display-title text-6xl sm:text-7xl">private fitting request</h1>
           <p className="copy-muted max-w-xl text-sm leading-8">
-            Use the shared bacibaci booking flow to reserve a fitting, request a suit,
+            Use the shared Baci Baci booking flow to reserve a fitting, request a suit,
             or begin an eveningwear conversation.
           </p>
         </div>
@@ -17,6 +17,7 @@ export default function BookFittingPage() {
           buttonLabel="Book Fitting"
           defaultService="bacibaci fitting"
           defaultType="fitting"
+          defaultCategory="Custom"
         />
       </div>
     </section>

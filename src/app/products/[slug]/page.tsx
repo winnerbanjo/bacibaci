@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BookingForm } from "@/components/booking-form";
-import { getSuitBySlug } from "@/lib/local-images";
+import { getDisplayItemBySlug } from "@/lib/catalog";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -13,7 +13,7 @@ type ProductDetailPageProps = {
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { slug } = await params;
-  const item = await getSuitBySlug(slug);
+  const item = await getDisplayItemBySlug(slug);
 
   if (!item) {
     notFound();
@@ -24,7 +24,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
       <div className="shell grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
         <div className="space-y-6">
           <div className="editorial-image aspect-[4/5]">
-            <Image src={item.src} alt={item.name} fill className="object-cover" sizes="50vw" />
+            <Image src={item.image} alt={item.name} fill className="object-cover" sizes="50vw" />
           </div>
           <div>
             <p className="eyebrow">suits</p>
@@ -41,7 +41,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
           defaultService={item.name}
           defaultType="suit-request"
           productName={item.name}
-          includeMeasurements
+          defaultCategory="Suits"
         />
       </div>
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-[rgba(245,243,239,0.98)] p-4 backdrop-blur md:hidden">

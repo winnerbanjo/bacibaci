@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { BRAND } from "@/lib/brand";
-import { createItemSlug, parseSizes } from "@/lib/catalog";
+import { createItemSlug, parseSizes } from "@/lib/catalog-utils";
 import { prisma } from "@/lib/prisma";
 
 type RouteContext = {

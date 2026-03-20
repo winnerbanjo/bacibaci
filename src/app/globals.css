@@ -6,8 +6,8 @@
   --color-ink: #111111;
   --color-muted: #5f5a54;
   --color-line: rgba(17, 17, 17, 0.12);
-  --font-sans: var(--font-manrope);
-  --font-display: var(--font-cormorant);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
 }
 
 @theme inline {
@@ -25,6 +25,8 @@ body {
     radial-gradient(circle at top, rgba(255, 255, 255, 0.92), transparent 40%),
     linear-gradient(180deg, #faf8f4 0%, #f3efe8 100%);
   color: var(--color-ink);
+  font-size: 15px;
+  line-height: 1.625;
 }
 
 a,
@@ -148,6 +150,9 @@ button {
 
 .copy-muted {
   color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.625;
+  max-width: 24rem;
 }
 
 .nav-link {

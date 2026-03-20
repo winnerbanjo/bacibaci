@@ -6,7 +6,7 @@ import type { FormEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-import { createItemSlug, formatPrice } from "@/lib/catalog";
+import { createItemSlug, formatPrice } from "@/lib/catalog-utils";
 
 type Item = {
   id: string;
@@ -283,7 +283,7 @@ export function AdminDashboard() {
     <section className="section-space">
       <div className="shell grid gap-8 lg:grid-cols-[240px_1fr]">
         <aside className="panel h-fit p-6">
-          <p className="eyebrow">bacibaci admin</p>
+          <p className="eyebrow">Baci Baci admin</p>
           <nav className="mt-6 space-y-2">
             {links.map((link) => (
               <Link
@@ -419,7 +419,7 @@ export function AdminDashboard() {
 
               <div className="panel p-6">
                 <p className="eyebrow">Catalog</p>
-                <h2 className="display-title mt-2 text-4xl">bacibaci products</h2>
+                <h2 className="display-title mt-2 text-4xl">Baci Baci products</h2>
                 <div className="mt-6 space-y-4">
                   {items.map((item) => (
                     <div
@@ -435,7 +435,11 @@ export function AdminDashboard() {
                             className="object-cover"
                             sizes="96px"
                           />
-                        ) : null}
+                        ) : (
+                          <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                            no image
+                          </div>
+                        )}
                       </div>
                       <div>
                         <p className="eyebrow">

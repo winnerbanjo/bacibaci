@@ -1,98 +1,99 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getHeroImage, getLocalCategoryItems } from "@/lib/local-images";
+import { HeroSlider } from "@/components/HeroSlider";
+import { SectionReveal } from "@/components/section-reveal";
+import { getDisplayItems } from "@/lib/catalog";
+import { getFrontpageImages } from "@/lib/local-images";
 
 export default async function HomePage() {
-  const [heroImage, suits, evening, essentials] = await Promise.all([
-    getHeroImage(),
-    getLocalCategoryItems("suits"),
-    getLocalCategoryItems("evening"),
-    getLocalCategoryItems("essentials"),
+  const [frontImages, suits, evening, essentials] = await Promise.all([
+    getFrontpageImages(4),
+    getDisplayItems("suits"),
+    getDisplayItems("evening"),
+    getDisplayItems("essentials"),
   ]);
 
-  const featured = [
-    { href: "/suits", label: "suits", item: suits[0] },
-    { href: "/evening", label: "evening", item: evening[0] },
-    { href: "/essentials", label: "essentials", item: essentials[0] },
+  const heroImages = frontImages.map((item) => item.src);
+
+  const sections = [
+    {
+      key: "suits",
+      title: "suits",
+      copy: "Built with precision. Every piece is measured, refined, and structured to hold its form.",
+      href: "/suits",
+      cta: "Request",
+      items: suits.slice(0, 2),
+    },
+    {
+      key: "evening",
+      title: "evening",
+      copy: "Designed for presence. Clean lines, balanced proportions, and a quiet finish.",
+      href: "/evening",
+      cta: "View",
+      items: evening.slice(0, 2),
+    },
+    {
+      key: "essentials",
+      title: "essentials",
+      copy: "Daily structure. Refined basics made to sit right, wear well, and last.",
+      href: "/essentials",
+      cta: "Shop",
+      items: essentials.slice(0, 2),
+    },
   ];
 
   return (
     <>
-      <section className="relative min-h-[calc(100vh-81px)] overflow-hidden">
-        {heroImage ? (
-          <Image
-            src={heroImage}
-            alt="bacibaci hero"
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
-        ) : null}
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="shell relative flex min-h-[calc(100vh-81px)] items-end py-16 text-white">
-          <div className="max-w-3xl">
-            <p className="eyebrow text-white/70">editorial tailoring</p>
-            <h1 className="display-title mt-4 text-7xl lowercase sm:text-8xl md:text-9xl">
-              bacibaci
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 sm:text-xl">
-              refined form. controlled presence.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/custom" className="button-primary">
-                Start Your Fit
-              </Link>
-              <Link href="/gift-card" className="button-secondary border-white/30 bg-white/10 text-white">
-                Gift Card
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider images={heroImages} />
 
-      <section className="section-space">
-        <div className="shell">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="eyebrow">Editorial grid</p>
-              <h2 className="display-title mt-3 text-5xl sm:text-6xl">
-                built around silhouette
-              </h2>
+      {sections.map((section) => (
+        <section key={section.key} className="section-space">
+          <div className="shell px-6 md:px-16">
+            <SectionReveal className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="eyebrow">{section.title}</p>
+                <h2 className="display-title mt-3 text-5xl lowercase sm:text-6xl">
+                  {section.title}
+                </h2>
+              </div>
+              <div className="max-w-sm">
+                <p className="mt-2 text-[15px] leading-relaxed text-neutral-600">
+                  {section.copy}
+                </p>
+                <Link href={section.href} className="button-secondary mt-6">
+                  {section.cta}
+                </Link>
+              </div>
+            </SectionReveal>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {section.items.map((item) => (
+                <SectionReveal key={item.slug}>
+                  <article className="group">
+                    <div className="relative aspect-square overflow-hidden">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        quality={100}
+                        className="object-cover object-[center_top] transition-all duration-500"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                    <div className="mt-4 flex items-start justify-between gap-4">
+                      <div>
+                        <p className="eyebrow">{section.title}</p>
+                        <h3 className="display-title mt-2 text-3xl">{item.name}</h3>
+                      </div>
+                    </div>
+                  </article>
+                </SectionReveal>
+              ))}
             </div>
-            <p className="max-w-xl text-sm leading-7 text-[var(--color-muted)]">
-              bacibaci is focused only on suits, evening wear, and essentials.
-            </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {featured.map((entry) => (
-              <article key={entry.label} className="group space-y-4">
-                <div className="editorial-image aspect-[4/5]">
-                  {entry.item ? (
-                    <Image
-                      src={entry.item.src}
-                      alt={entry.item.name}
-                      fill
-                      className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  ) : null}
-                </div>
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="eyebrow">{entry.label}</p>
-                    <h3 className="display-title mt-2 text-4xl lowercase">{entry.label}</h3>
-                  </div>
-                  <Link href={entry.href} className="button-secondary">
-                    Explore
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      ))}
     </>
   );
 }

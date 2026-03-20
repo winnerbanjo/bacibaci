@@ -9,7 +9,7 @@ export default async function LookbookPage() {
     <section className="section-space">
       <div className="shell">
         <p className="eyebrow">lookbook</p>
-        <h1 className="display-title mt-3 text-6xl sm:text-7xl">the bacibaci line</h1>
+        <h1 className="display-title mt-3 text-6xl sm:text-7xl">the Baci Baci line</h1>
         <div className="mt-10 columns-1 gap-6 md:columns-2 xl:columns-3">
           {items.map((item) => (
             <div key={item.src} className="mb-6 break-inside-avoid">

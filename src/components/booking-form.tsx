@@ -9,37 +9,29 @@ type BookingFormProps = {
   defaultService: string;
   defaultType: string;
   productName?: string;
-  includeMeasurements?: boolean;
+  defaultCategory?: string;
 };
 
 type FormState = {
-  name: string;
+  fullName: string;
   email: string;
   phone: string;
+  category: string;
   date: string;
   time: string;
+  consultationType: string;
   notes: string;
-  height: string;
-  chest: string;
-  waist: string;
-  shoulder: string;
-  fitChoice: string;
-  size: string;
 };
 
 const initialState: FormState = {
-  name: "",
+  fullName: "",
   email: "",
   phone: "",
+  category: "Suits",
   date: "",
   time: "",
+  consultationType: "Virtual",
   notes: "",
-  height: "",
-  chest: "",
-  waist: "",
-  shoulder: "",
-  fitChoice: "size",
-  size: "",
 };
 
 export function BookingForm({
@@ -48,9 +40,9 @@ export function BookingForm({
   defaultService,
   defaultType,
   productName,
-  includeMeasurements = false,
+  defaultCategory = "Suits",
 }: BookingFormProps) {
-  const [form, setForm] = useState<FormState>(initialState);
+  const [form, setForm] = useState<FormState>({ ...initialState, category: defaultCategory });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -63,12 +55,8 @@ export function BookingForm({
 
     const notes = [
       productName ? `Product: ${productName}` : "",
-      includeMeasurements ? `Fit choice: ${form.fitChoice}` : "",
-      includeMeasurements && form.size ? `Selected size: ${form.size}` : "",
-      includeMeasurements && form.height ? `Height: ${form.height}` : "",
-      includeMeasurements && form.chest ? `Chest: ${form.chest}` : "",
-      includeMeasurements && form.waist ? `Waist: ${form.waist}` : "",
-      includeMeasurements && form.shoulder ? `Shoulder: ${form.shoulder}` : "",
+      `Category: ${form.category}`,
+      `Consultation Type: ${form.consultationType}`,
       form.notes ? `Notes: ${form.notes}` : "",
     ]
       .filter(Boolean)
@@ -80,7 +68,7 @@ export function BookingForm({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: form.name,
+        name: form.fullName,
         email: form.email,
         phone: form.phone,
         date: form.date,
@@ -99,8 +87,8 @@ export function BookingForm({
       return;
     }
 
-    setMessage("Your request has been sent.");
-    setForm(initialState);
+    setMessage("Your request has been received. Our team will contact you shortly.");
+    setForm({ ...initialState, category: defaultCategory });
     setLoading(false);
   }
 
@@ -113,14 +101,14 @@ export function BookingForm({
       <div className="grid gap-4 md:grid-cols-2">
         <input
           className="field"
-          placeholder="Full name"
+          placeholder="Full Name"
           required
-          value={form.name}
-          onChange={(event) => setForm({ ...form, name: event.target.value })}
+          value={form.fullName}
+          onChange={(event) => setForm({ ...form, fullName: event.target.value })}
         />
         <input
           className="field"
-          placeholder="Email address"
+          placeholder="Email"
           required
           type="email"
           value={form.email}
@@ -128,11 +116,21 @@ export function BookingForm({
         />
         <input
           className="field"
-          placeholder="Phone number"
+          placeholder="Phone Number"
           required
           value={form.phone}
           onChange={(event) => setForm({ ...form, phone: event.target.value })}
         />
+        <select
+          className="field"
+          value={form.category}
+          onChange={(event) => setForm({ ...form, category: event.target.value })}
+        >
+          <option value="Suits">Suits</option>
+          <option value="Evening">Evening</option>
+          <option value="Essentials">Essentials</option>
+          <option value="Custom">Custom</option>
+        </select>
         <input
           className="field"
           required
@@ -147,54 +145,18 @@ export function BookingForm({
           value={form.time}
           onChange={(event) => setForm({ ...form, time: event.target.value })}
         />
-        {includeMeasurements ? (
-          <select
-            className="field"
-            value={form.fitChoice}
-            onChange={(event) => setForm({ ...form, fitChoice: event.target.value })}
-          >
-            <option value="size">Select size</option>
-            <option value="custom">Custom fit</option>
-          </select>
-        ) : null}
+        <select
+          className="field"
+          value={form.consultationType}
+          onChange={(event) => setForm({ ...form, consultationType: event.target.value })}
+        >
+          <option value="Virtual">Virtual</option>
+          <option value="Physical">Physical</option>
+        </select>
       </div>
-      {includeMeasurements ? (
-        <div className="grid gap-4 md:grid-cols-2">
-          <input
-            className="field"
-            placeholder="Preferred size"
-            value={form.size}
-            onChange={(event) => setForm({ ...form, size: event.target.value })}
-          />
-          <input
-            className="field"
-            placeholder="Height"
-            value={form.height}
-            onChange={(event) => setForm({ ...form, height: event.target.value })}
-          />
-          <input
-            className="field"
-            placeholder="Chest"
-            value={form.chest}
-            onChange={(event) => setForm({ ...form, chest: event.target.value })}
-          />
-          <input
-            className="field"
-            placeholder="Waist"
-            value={form.waist}
-            onChange={(event) => setForm({ ...form, waist: event.target.value })}
-          />
-          <input
-            className="field md:col-span-2"
-            placeholder="Shoulder"
-            value={form.shoulder}
-            onChange={(event) => setForm({ ...form, shoulder: event.target.value })}
-          />
-        </div>
-      ) : null}
       <textarea
         className="field min-h-32"
-        placeholder="Notes"
+        placeholder="Additional Notes"
         value={form.notes}
         onChange={(event) => setForm({ ...form, notes: event.target.value })}
       />
