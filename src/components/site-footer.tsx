@@ -11,13 +11,13 @@ export function SiteFooter() {
           <div className="mt-5 space-y-3 text-sm">
             <Link href="/">Home</Link>
             <br />
-            <Link href="/suits">Suits</Link>
+            <Link href="/shop">Shop</Link>
             <br />
-            <Link href="/evening">Evening</Link>
+            <Link href="/custom">Custom</Link>
             <br />
-            <Link href="/essentials">Essentials</Link>
+            <Link href="/lookbook">Look Book</Link>
             <br />
-            <Link href="/book-fitting">Book Fitting</Link>
+            <Link href="/gift-card">Gift Card</Link>
           </div>
         </div>
         <div>
@@ -25,11 +25,9 @@ export function SiteFooter() {
           <div className="mt-5 space-y-3 text-sm">
             <Link href="/contact">Contact</Link>
             <br />
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <br />
             <Link href="/terms">Terms</Link>
             <br />
-            <Link href="/return-policy">Return Policy</Link>
+            <Link href="/privacy-policy">Privacy</Link>
           </div>
         </div>
         <div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BookingForm } from "@/components/booking-form";
@@ -42,6 +43,11 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
           productName={item.name}
           includeMeasurements
         />
+      </div>
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-[rgba(245,243,239,0.98)] p-4 backdrop-blur md:hidden">
+        <Link href="#request-form" className="button-primary w-full">
+          Request This Suit
+        </Link>
       </div>
     </section>
   );

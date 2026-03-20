@@ -42,6 +42,8 @@ type Subscriber = {
 type Settings = {
   suitPricing: string;
   eveningPricing: string;
+  giftCardEnabled: boolean;
+  giftCardDenominations: string;
 };
 
 type FormState = {
@@ -117,6 +119,8 @@ export function AdminDashboard() {
   const [settings, setSettings] = useState<Settings>({
     suitPricing: "",
     eveningPricing: "",
+    giftCardEnabled: true,
+    giftCardDenominations: "50000,100000,200000,300000,500000,1000000",
   });
   const [form, setForm] = useState<FormState>(initialForm);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -162,6 +166,8 @@ export function AdminDashboard() {
       settingsData?.settings ?? {
         suitPricing: "",
         eveningPricing: "",
+        giftCardEnabled: true,
+        giftCardDenominations: "50000,100000,200000,300000,500000,1000000",
       }
     );
     setError(null);
@@ -365,6 +371,7 @@ export function AdminDashboard() {
                   >
                     <option value="custom">custom</option>
                     <option value="ready">ready</option>
+                    <option value="giftcard">giftcard</option>
                   </select>
                 </div>
                 <input
@@ -568,6 +575,24 @@ export function AdminDashboard() {
                 placeholder="Evening pricing"
                 onChange={(event) =>
                   setSettings({ ...settings, eveningPricing: event.target.value })
+                }
+              />
+              <label className="flex items-center gap-3 text-sm uppercase tracking-[0.16em]">
+                <input
+                  type="checkbox"
+                  checked={settings.giftCardEnabled}
+                  onChange={(event) =>
+                    setSettings({ ...settings, giftCardEnabled: event.target.checked })
+                  }
+                />
+                Enable gift card
+              </label>
+              <input
+                className="field"
+                value={settings.giftCardDenominations}
+                placeholder="Gift card denominations"
+                onChange={(event) =>
+                  setSettings({ ...settings, giftCardDenominations: event.target.value })
                 }
               />
               <button className="button-primary" type="submit" disabled={saving}>

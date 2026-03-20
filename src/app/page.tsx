@@ -41,8 +41,11 @@ export default async function HomePage() {
               refined form. controlled presence.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/book-fitting" className="button-primary">
+              <Link href="/custom" className="button-primary">
                 Start Your Fit
+              </Link>
+              <Link href="/gift-card" className="button-secondary border-white/30 bg-white/10 text-white">
+                Gift Card
               </Link>
             </div>
           </div>

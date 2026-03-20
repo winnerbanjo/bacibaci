@@ -62,6 +62,24 @@ export async function getLocalCategoryItems(
   });
 }
 
+export async function getShopItems() {
+  return getLocalCategoryItems("essentials");
+}
+
+export async function getManItems() {
+  const [suits, essentials] = await Promise.all([
+    getLocalCategoryItems("suits"),
+    getLocalCategoryItems("essentials"),
+  ]);
+
+  return [...suits, ...essentials];
+}
+
+export async function getWomanItems() {
+  const evening = await getLocalCategoryItems("evening");
+  return evening;
+}
+
 export async function getSuitBySlug(slug: string) {
   const items = await getLocalCategoryItems("suits");
   return items.find((item) => item.slug === slug) ?? null;

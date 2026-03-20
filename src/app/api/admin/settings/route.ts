@@ -1,24 +1,34 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
-
-const SUIT_KEY = "bacibaci_suit_pricing";
-const EVENING_KEY = "bacibaci_evening_pricing";
+import { siteSettingKeys } from "@/lib/site-settings";
 
 export async function GET() {
   try {
     const settings = await prisma.setting.findMany({
       where: {
         key: {
-          in: [SUIT_KEY, EVENING_KEY],
+          in: [
+            siteSettingKeys.suit,
+            siteSettingKeys.evening,
+            siteSettingKeys.giftEnabled,
+            siteSettingKeys.giftDenominations,
+          ],
         },
       },
     });
 
     return NextResponse.json({
       settings: {
-        suitPricing: settings.find((entry) => entry.key === SUIT_KEY)?.value ?? "",
-        eveningPricing: settings.find((entry) => entry.key === EVENING_KEY)?.value ?? "",
+        suitPricing: settings.find((entry) => entry.key === siteSettingKeys.suit)?.value ?? "",
+        eveningPricing:
+          settings.find((entry) => entry.key === siteSettingKeys.evening)?.value ?? "",
+        giftCardEnabled:
+          (settings.find((entry) => entry.key === siteSettingKeys.giftEnabled)?.value ?? "true") ===
+          "true",
+        giftCardDenominations:
+          settings.find((entry) => entry.key === siteSettingKeys.giftDenominations)?.value ??
+          "50000,100000,200000,300000,500000,1000000",
       },
     });
   } catch (error) {
@@ -32,29 +42,55 @@ export async function PATCH(request: Request) {
     const body = await request.json();
     const suitPricing = String(body.suitPricing ?? "").trim();
     const eveningPricing = String(body.eveningPricing ?? "").trim();
+    const giftCardEnabled = String(Boolean(body.giftCardEnabled));
+    const giftCardDenominations = String(body.giftCardDenominations ?? "").trim();
 
     await prisma.$transaction([
       prisma.setting.upsert({
-        where: { key: SUIT_KEY },
+        where: { key: siteSettingKeys.suit },
         update: {
           value: suitPricing,
           updatedAt: new Date(),
         },
         create: {
-          key: SUIT_KEY,
+          key: siteSettingKeys.suit,
           value: suitPricing,
           updatedAt: new Date(),
         },
       }),
       prisma.setting.upsert({
-        where: { key: EVENING_KEY },
+        where: { key: siteSettingKeys.evening },
         update: {
           value: eveningPricing,
           updatedAt: new Date(),
         },
         create: {
-          key: EVENING_KEY,
+          key: siteSettingKeys.evening,
           value: eveningPricing,
+          updatedAt: new Date(),
+        },
+      }),
+      prisma.setting.upsert({
+        where: { key: siteSettingKeys.giftEnabled },
+        update: {
+          value: giftCardEnabled,
+          updatedAt: new Date(),
+        },
+        create: {
+          key: siteSettingKeys.giftEnabled,
+          value: giftCardEnabled,
+          updatedAt: new Date(),
+        },
+      }),
+      prisma.setting.upsert({
+        where: { key: siteSettingKeys.giftDenominations },
+        update: {
+          value: giftCardDenominations,
+          updatedAt: new Date(),
+        },
+        create: {
+          key: siteSettingKeys.giftDenominations,
+          value: giftCardDenominations,
           updatedAt: new Date(),
         },
       }),

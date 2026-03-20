@@ -105,7 +105,7 @@ export function BookingForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="panel space-y-5 p-6 sm:p-8">
+    <form id="request-form" onSubmit={handleSubmit} className="panel space-y-5 p-6 sm:p-8">
       <div>
         <p className="eyebrow">Appointment</p>
         <h2 className="display-title mt-2 text-4xl">{title}</h2>

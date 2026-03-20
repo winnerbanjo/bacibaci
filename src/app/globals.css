@@ -92,6 +92,7 @@ button {
 }
 
 .button-primary:hover {
+  transform: scale(1.02);
   opacity: 0.88;
 }
 
@@ -110,6 +111,7 @@ button {
 }
 
 .button-secondary:hover {
+  transform: scale(1.02);
   border-color: var(--color-ink);
 }
 
@@ -146,4 +148,28 @@ button {
 
 .copy-muted {
   color: var(--color-muted);
+}
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  padding-bottom: 0.2rem;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: currentColor;
+  transition: transform 300ms ease;
+}
+
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  transform: scaleX(1);
 }
