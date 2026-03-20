@@ -5,7 +5,7 @@ import { NewsletterForm } from "@/components/newsletter-form";
 export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--color-line)] bg-[rgba(255,255,255,0.4)]">
-      <div className="shell grid gap-10 py-14 md:grid-cols-3">
+      <div className="shell grid gap-10 py-14 md:grid-cols-4">
         <div>
           <p className="eyebrow">Navigation</p>
           <div className="mt-5 space-y-3 text-sm">
@@ -25,9 +25,19 @@ export function SiteFooter() {
           <div className="mt-5 space-y-3 text-sm">
             <Link href="/contact">Contact</Link>
             <br />
-            <Link href="/terms">Terms</Link>
+            <Link href="/gift-card">Gift Card</Link>
+          </div>
+        </div>
+        <div>
+          <p className="eyebrow">Legal</p>
+          <div className="mt-5 space-y-3 text-sm">
+            <Link href="/privacy-policy">Privacy Policy</Link>
             <br />
-            <Link href="/privacy-policy">Privacy</Link>
+            <Link href="/terms-and-conditions">Terms &amp; Conditions</Link>
+            <br />
+            <Link href="/refund-policy">Refund Policy</Link>
+            <br />
+            <Link href="/shipping-policy">Shipping Policy</Link>
           </div>
         </div>
         <div>

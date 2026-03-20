@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { SectionReveal } from "@/components/section-reveal";
-import { WHATSAPP_NUMBER } from "@/lib/brand";
+import { formatPrice } from "@/lib/catalog-utils";
 import { getDisplayItems } from "@/lib/catalog";
 
 export default async function EssentialsPage() {
@@ -37,14 +37,11 @@ export default async function EssentialsPage() {
               </div>
               <div className="mt-4 flex items-start justify-between gap-4">
                 <div>
-                  <p className="eyebrow">essentials</p>
-                  <h2 className="display-title mt-2 text-3xl">{item.name}</h2>
+                  <h2 className="display-title text-3xl">{item.name}</h2>
+                  <p className="mt-3 text-sm text-[var(--color-muted)]">{formatPrice(item.price)}</p>
                 </div>
                 <Link
-                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                    `I want to order ${item.name}`
-                  )}`}
-                  target="_blank"
+                  href={`/essentials/${item.slug}`}
                   className="button-primary"
                 >
                   Order Now

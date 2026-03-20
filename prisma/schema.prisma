@@ -50,3 +50,19 @@ model Subscriber {
   createdAt DateTime @default(now())
   brand     String   @default("dionbaci")
 }
+
+model Order {
+  id           String   @id
+  name         String
+  email        String
+  phone        String
+  address      String
+  product      String
+  productSlug  String
+  size         String
+  quantity     Int
+  receiptImage String?
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+  brand        String   @default("dionbaci")
+}

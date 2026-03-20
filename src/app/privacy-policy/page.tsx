@@ -1,14 +1,34 @@
+import { LegalPage } from "@/components/legal-page";
+
 export default function PrivacyPolicyPage() {
   return (
-    <section className="section-space">
-      <div className="shell max-w-3xl">
-        <p className="eyebrow">privacy policy</p>
-        <h1 className="display-title mt-3 text-6xl">client privacy</h1>
-        <p className="mt-6 text-sm leading-8 text-[var(--color-muted)]">
-          Baci Baci stores contact details, appointment details, and product requests
-          only for client service, order handling, and fitting coordination.
-        </p>
-      </div>
-    </section>
+    <LegalPage
+      eyebrow="privacy policy"
+      title="Client privacy"
+      intro="Baci Baci collects only the information needed to manage consultations, orders, delivery, and client communication."
+      sections={[
+        {
+          title: "Information we collect",
+          paragraphs: [
+            "We collect contact details, delivery information, appointment preferences, order details, and files you choose to upload, including payment receipts for essentials orders.",
+            "We do not request more data than is necessary to complete your request or maintain client support.",
+          ],
+        },
+        {
+          title: "How information is used",
+          paragraphs: [
+            "Your information is used to confirm orders, coordinate fittings, arrange delivery, and respond to client service requests.",
+            "We may also use your details to send operational updates related to a live order, booking, or subscription request.",
+          ],
+        },
+        {
+          title: "Storage and handling",
+          paragraphs: [
+            "Order, booking, and subscriber records are stored through our managed platform providers and are limited to internal brand operations.",
+            "Uploaded receipts and product media are processed through secure third-party infrastructure used to operate the brand.",
+          ],
+        },
+      ]}
+    />
   );
 }

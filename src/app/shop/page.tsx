@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { SectionReveal } from "@/components/section-reveal";
-import { WHATSAPP_NUMBER } from "@/lib/brand";
+import { formatPrice } from "@/lib/catalog-utils";
 import { getDisplayItems } from "@/lib/catalog";
 
 export default async function ShopPage() {
@@ -17,7 +17,7 @@ export default async function ShopPage() {
             <h1 className="display-title mt-3 text-6xl sm:text-7xl">essential wardrobe</h1>
           </div>
           <p className="max-w-xl text-sm leading-7 text-[var(--color-muted)]">
-            A clean essentials listing with direct WhatsApp ordering.
+            A clean essentials listing with a dedicated checkout flow.
           </p>
         </SectionReveal>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
@@ -29,14 +29,10 @@ export default async function ShopPage() {
               </div>
               <div className="mt-4 flex items-start justify-between gap-4">
                 <div>
-                  <p className="eyebrow">shop</p>
-                  <h2 className="display-title mt-2 text-3xl">{item.name}</h2>
+                  <h2 className="display-title text-3xl">{item.name}</h2>
+                  <p className="mt-3 text-sm text-[var(--color-muted)]">{formatPrice(item.price)}</p>
                 </div>
-                <Link
-                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`I want to order ${item.name}`)}`}
-                  target="_blank"
-                  className="button-primary"
-                >
+                <Link href={`/essentials/${item.slug}`} className="button-primary">
                   Order Now
                 </Link>
               </div>

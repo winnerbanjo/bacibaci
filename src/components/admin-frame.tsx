@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 const adminLinks = [
   { href: "/admin/dashboard", label: "Dashboard" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/orders", label: "Orders" },
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/subscribers", label: "Subscribers" },
 ];

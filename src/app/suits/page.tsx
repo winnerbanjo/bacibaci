@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { SectionReveal } from "@/components/section-reveal";
+import { WHATSAPP_NUMBER } from "@/lib/brand";
 import { getDisplayItems } from "@/lib/catalog";
 
 export default async function SuitsPage() {
@@ -36,10 +37,15 @@ export default async function SuitsPage() {
               </div>
               <div className="mt-5 flex items-start justify-between gap-4">
                 <div>
-                  <p className="eyebrow">suits</p>
-                  <h2 className="display-title mt-2 text-4xl">{item.name}</h2>
+                  <h2 className="display-title text-4xl">{item.name}</h2>
                 </div>
-                <Link href={`/products/${item.slug}`} className="button-primary">
+                <Link
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                    `I want to order ${item.name}`
+                  )}`}
+                  target="_blank"
+                  className="button-primary"
+                >
                   Request This Suit
                 </Link>
               </div>

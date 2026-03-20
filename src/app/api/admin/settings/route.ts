@@ -13,6 +13,9 @@ export async function GET() {
             siteSettingKeys.evening,
             siteSettingKeys.giftEnabled,
             siteSettingKeys.giftDenominations,
+            siteSettingKeys.bankAccountName,
+            siteSettingKeys.bankAccountNumber,
+            siteSettingKeys.bankName,
           ],
         },
       },
@@ -29,6 +32,15 @@ export async function GET() {
         giftCardDenominations:
           settings.find((entry) => entry.key === siteSettingKeys.giftDenominations)?.value ??
           "50000,100000,200000,300000,500000,1000000",
+        bankAccountName:
+          settings.find((entry) => entry.key === siteSettingKeys.bankAccountName)?.value ??
+          "Baci Baci",
+        bankAccountNumber:
+          settings.find((entry) => entry.key === siteSettingKeys.bankAccountNumber)?.value ??
+          "Update in admin",
+        bankName:
+          settings.find((entry) => entry.key === siteSettingKeys.bankName)?.value ??
+          "Update in admin",
       },
     });
   } catch (error) {
@@ -44,6 +56,9 @@ export async function PATCH(request: Request) {
     const eveningPricing = String(body.eveningPricing ?? "").trim();
     const giftCardEnabled = String(Boolean(body.giftCardEnabled));
     const giftCardDenominations = String(body.giftCardDenominations ?? "").trim();
+    const bankAccountName = String(body.bankAccountName ?? "").trim();
+    const bankAccountNumber = String(body.bankAccountNumber ?? "").trim();
+    const bankName = String(body.bankName ?? "").trim();
 
     await prisma.$transaction([
       prisma.setting.upsert({
@@ -91,6 +106,42 @@ export async function PATCH(request: Request) {
         create: {
           key: siteSettingKeys.giftDenominations,
           value: giftCardDenominations,
+          updatedAt: new Date(),
+        },
+      }),
+      prisma.setting.upsert({
+        where: { key: siteSettingKeys.bankAccountName },
+        update: {
+          value: bankAccountName,
+          updatedAt: new Date(),
+        },
+        create: {
+          key: siteSettingKeys.bankAccountName,
+          value: bankAccountName,
+          updatedAt: new Date(),
+        },
+      }),
+      prisma.setting.upsert({
+        where: { key: siteSettingKeys.bankAccountNumber },
+        update: {
+          value: bankAccountNumber,
+          updatedAt: new Date(),
+        },
+        create: {
+          key: siteSettingKeys.bankAccountNumber,
+          value: bankAccountNumber,
+          updatedAt: new Date(),
+        },
+      }),
+      prisma.setting.upsert({
+        where: { key: siteSettingKeys.bankName },
+        update: {
+          value: bankName,
+          updatedAt: new Date(),
+        },
+        create: {
+          key: siteSettingKeys.bankName,
+          value: bankName,
           updatedAt: new Date(),
         },
       }),

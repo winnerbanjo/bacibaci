@@ -180,8 +180,15 @@ export async function getDisplayItemBySlug(slug: string) {
     };
   }
 
-  const localSuits = await getLocalCategoryItems("suits");
-  const fallback = localSuits.find((entry) => entry.slug === slug);
+  const [localSuits, localEvening, localEssentials] = await Promise.all([
+    getLocalCategoryItems("suits"),
+    getLocalCategoryItems("evening"),
+    getLocalCategoryItems("essentials"),
+  ]);
+  const fallback =
+    localSuits.find((entry) => entry.slug === slug) ??
+    localEvening.find((entry) => entry.slug === slug) ??
+    localEssentials.find((entry) => entry.slug === slug);
 
   if (!fallback) {
     return null;
@@ -192,8 +199,8 @@ export async function getDisplayItemBySlug(slug: string) {
     name: fallback.name,
     slug: fallback.slug,
     image: fallback.src,
-    category: "suits" as CatalogCategory,
-    type: "custom",
+    category: fallback.category,
+    type: fallback.category === "essentials" ? "ready" : "custom",
     brand: BRAND,
     description: null,
     sizes: [],

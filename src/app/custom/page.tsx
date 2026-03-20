@@ -15,7 +15,7 @@ export default async function CustomPage() {
           <h1 className="display-title text-6xl sm:text-7xl">built for a precise fit</h1>
           {lead ? (
             <div className="editorial-image aspect-[4/5]">
-              <Image src={lead.src} alt={lead.name} fill className="object-cover transition-all duration-300 hover:scale-[1.02]" sizes="50vw" />
+              <Image src={lead.src} alt={lead.name} fill className="object-cover object-[center_top]" sizes="50vw" />
             </div>
           ) : null}
         </div>

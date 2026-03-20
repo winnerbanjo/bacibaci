@@ -81,11 +81,8 @@ export default async function HomePage() {
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
-                    <div className="mt-4 flex items-start justify-between gap-4">
-                      <div>
-                        <p className="eyebrow">{section.title}</p>
-                        <h3 className="display-title mt-2 text-3xl">{item.name}</h3>
-                      </div>
+                    <div className="mb-4 mt-12">
+                      <h3 className="display-title text-3xl">{item.name}</h3>
                     </div>
                   </article>
                 </SectionReveal>

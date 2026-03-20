@@ -6,6 +6,7 @@ const folders: Record<string, string> = {
   suits: "bacibaci/suits",
   evening: "bacibaci/evening",
   essentials: "bacibaci/essentials",
+  orders: "bacibaci/orders",
 };
 
 export async function POST(request: Request) {

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FormEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { createItemSlug, formatPrice } from "@/lib/catalog-utils";
@@ -39,11 +39,29 @@ type Subscriber = {
   createdAt: string;
 };
 
+type Order = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  product: string;
+  productSlug: string;
+  size: string;
+  quantity: number;
+  receiptImage: string | null;
+  status: string;
+  createdAt: string;
+};
+
 type Settings = {
   suitPricing: string;
   eveningPricing: string;
   giftCardEnabled: boolean;
   giftCardDenominations: string;
+  bankAccountName: string;
+  bankAccountNumber: string;
+  bankName: string;
 };
 
 type FormState = {
@@ -105,6 +123,7 @@ export function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [settings, setSettings] = useState<Settings>({
@@ -112,6 +131,9 @@ export function AdminDashboard() {
     eveningPricing: "",
     giftCardEnabled: true,
     giftCardDenominations: "50000,100000,200000,300000,500000,1000000",
+    bankAccountName: "Baci Baci",
+    bankAccountNumber: "Update in admin",
+    bankName: "Update in admin",
   });
   const [form, setForm] = useState<FormState>(initialForm);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -134,13 +156,14 @@ export function AdminDashboard() {
 
     const responses = await Promise.all([
       fetch("/api/admin/items", { cache: "no-store" }),
+      fetch("/api/admin/orders", { cache: "no-store" }),
       fetch("/api/admin/bookings", { cache: "no-store" }),
       fetch("/api/admin/subscribers", { cache: "no-store" }),
       fetch("/api/admin/settings", { cache: "no-store" }),
     ]);
 
     const [itemsResponse] = responses;
-    const [itemsData, bookingsData, subscribersData, settingsData] = await Promise.all(
+    const [itemsData, ordersData, bookingsData, subscribersData, settingsData] = await Promise.all(
       responses.map((response) => response.json().catch(() => null))
     );
 
@@ -151,6 +174,7 @@ export function AdminDashboard() {
     }
 
     setItems(itemsData?.items ?? []);
+    setOrders(ordersData?.orders ?? []);
     setBookings(bookingsData?.bookings ?? []);
     setSubscribers(subscribersData?.subscribers ?? []);
     setSettings(
@@ -159,6 +183,9 @@ export function AdminDashboard() {
         eveningPricing: "",
         giftCardEnabled: true,
         giftCardDenominations: "50000,100000,200000,300000,500000,1000000",
+        bankAccountName: "Baci Baci",
+        bankAccountNumber: "Update in admin",
+        bankName: "Update in admin",
       }
     );
     setError(null);
@@ -172,11 +199,6 @@ export function AdminDashboard() {
 
     void loadData();
   }, [authorized]);
-
-  const pendingBookings = useMemo(
-    () => bookings.filter((booking) => booking.status.toLowerCase() === "pending"),
-    [bookings]
-  );
 
   function resetForm() {
     setForm(initialForm);
@@ -243,6 +265,18 @@ export function AdminDashboard() {
     await loadData();
   }
 
+  async function updateOrder(id: string, status: string) {
+    await fetch(`/api/admin/orders/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    });
+
+    await loadData();
+  }
+
   async function saveSettings(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
@@ -290,16 +324,16 @@ export function AdminDashboard() {
               <p className="display-title mt-3 text-5xl">{items.length}</p>
             </div>
             <div className="panel p-6">
+              <p className="eyebrow">Orders</p>
+              <p className="display-title mt-3 text-5xl">{orders.length}</p>
+            </div>
+            <div className="panel p-6">
               <p className="eyebrow">Bookings</p>
               <p className="display-title mt-3 text-5xl">{bookings.length}</p>
             </div>
             <div className="panel p-6">
               <p className="eyebrow">Subscribers</p>
               <p className="display-title mt-3 text-5xl">{subscribers.length}</p>
-            </div>
-            <div className="panel p-6">
-              <p className="eyebrow">Pending</p>
-              <p className="display-title mt-3 text-5xl">{pendingBookings.length}</p>
             </div>
           </div>
         </div>
@@ -501,6 +535,53 @@ export function AdminDashboard() {
         </div>
       ) : null}
 
+      {pathname === "/admin/orders" ? (
+        <div className="panel p-6">
+          <p className="eyebrow">Orders</p>
+          <h1 className="display-title mt-2 text-4xl">essentials orders</h1>
+          <div className="mt-6 space-y-4">
+            {orders.map((order) => (
+              <div key={order.id} className="border-t border-[var(--color-line)] py-4">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <p className="display-title text-2xl">{order.name}</p>
+                    <p className="mt-1 text-sm text-[var(--color-muted)]">
+                      {order.product} • {order.size} • Qty {order.quantity}
+                    </p>
+                    <p className="mt-1 text-sm text-[var(--color-muted)]">
+                      {order.email} • {order.phone}
+                    </p>
+                    <p className="mt-1 text-sm text-[var(--color-muted)]">{order.address}</p>
+                    <p className="mt-1 text-sm text-[var(--color-muted)]">Status: {order.status}</p>
+                    {order.receiptImage ? (
+                      <Link href={order.receiptImage} target="_blank" className="mt-2 inline-block text-sm underline">
+                        View receipt
+                      </Link>
+                    ) : null}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className="button-secondary"
+                      onClick={() => void updateOrder(order.id, "confirmed")}
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      type="button"
+                      className="button-primary"
+                      onClick={() => void updateOrder(order.id, "fulfilled")}
+                    >
+                      Fulfill
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
       {pathname === "/admin/subscribers" ? (
         <div className="panel p-6">
           <p className="eyebrow">Subscribers</p>
@@ -545,6 +626,30 @@ export function AdminDashboard() {
             placeholder="Evening pricing"
             onChange={(event) =>
               setSettings({ ...settings, eveningPricing: event.target.value })
+            }
+          />
+          <input
+            className="field"
+            value={settings.bankAccountName}
+            placeholder="Bank account name"
+            onChange={(event) =>
+              setSettings({ ...settings, bankAccountName: event.target.value })
+            }
+          />
+          <input
+            className="field"
+            value={settings.bankAccountNumber}
+            placeholder="Bank account number"
+            onChange={(event) =>
+              setSettings({ ...settings, bankAccountNumber: event.target.value })
+            }
+          />
+          <input
+            className="field"
+            value={settings.bankName}
+            placeholder="Bank name"
+            onChange={(event) =>
+              setSettings({ ...settings, bankName: event.target.value })
             }
           />
           <label className="flex items-center gap-3 text-sm uppercase tracking-[0.16em]">

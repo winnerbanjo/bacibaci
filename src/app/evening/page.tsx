@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { SectionReveal } from "@/components/section-reveal";
+import { WHATSAPP_NUMBER } from "@/lib/brand";
 import { getDisplayItems } from "@/lib/catalog";
 
 export default async function EveningPage() {
@@ -33,9 +34,14 @@ export default async function EveningPage() {
                 />
               </div>
               <div className="mt-4">
-                <p className="eyebrow">evening</p>
-                <h2 className="display-title mt-2 text-4xl">{item.name}</h2>
-                <Link href={`/book-fitting?look=${item.slug}`} className="button-primary mt-5">
+                <h2 className="display-title text-4xl">{item.name}</h2>
+                <Link
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                    `I want to order ${item.name}`
+                  )}`}
+                  target="_blank"
+                  className="button-primary mt-5"
+                >
                   Request This Look
                 </Link>
               </div>
