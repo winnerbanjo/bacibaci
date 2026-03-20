@@ -145,6 +145,36 @@ export async function getDisplayItems(category: CatalogCategory) {
     }));
   }
 
+  if (category === "essentials") {
+    const databaseBySlug = new Map(databaseItems.map((item) => [item.slug, item]));
+
+    return localItems.map((item) => {
+      const databaseItem = databaseBySlug.get(item.slug);
+
+      if (!databaseItem) {
+        return {
+          id: item.slug,
+          name: item.name,
+          slug: item.slug,
+          image: item.src,
+          category,
+          type: "ready",
+          brand: BRAND,
+          description: null,
+          sizes: [],
+          price: null,
+          createdAt: new Date(0).toISOString(),
+        };
+      }
+
+      return {
+        ...databaseItem,
+        name: item.name,
+        image: item.src,
+      };
+    });
+  }
+
   const localSources = localItems.map((item) => item.src);
 
   return databaseItems.map((item, index) => ({

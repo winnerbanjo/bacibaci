@@ -35,7 +35,7 @@ async function readFolder(folder: string) {
     const files = await readdir(folderPath);
     return files
       .filter((file) => !file.startsWith("."))
-      .filter((file) => /\.(png|jpe?g|webp|avif)$/i.test(file))
+      .filter((file) => /\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file))
       .sort((left, right) => left.localeCompare(right));
   } catch {
     return [];
@@ -68,18 +68,25 @@ export async function getLocalCategoryItems(
       : category === "evening"
         ? allFiles.filter((file) => /evening/i.test(file))
         : category === "essentials"
-          ? allFiles.filter((file) => /essential/i.test(file))
+          ? allFiles.filter((file) => /^IMG[_-]/i.test(file))
           : allFiles;
 
   return files.map((file) => {
     const cleaned = toLabel(file);
+    const imgMatch = file.match(/^IMG[_-]?(\d+)/i);
     const token = cleaned || `${category} look`;
-    const label = `${category.slice(0, -1)} ${token}`.trim();
+    const label =
+      category === "essentials" && imgMatch
+        ? `product ${imgMatch[1]}`
+        : `${category.slice(0, -1)} ${token}`.trim();
 
     return {
       category,
       name: toTitleCase(label),
-      slug: `${category}-${token.replace(/\s+/g, "-").toLowerCase()}`,
+      slug:
+        category === "essentials" && imgMatch
+          ? `${category}-product-${imgMatch[1]}`
+          : `${category}-${token.replace(/\s+/g, "-").toLowerCase()}`,
       src: `/images/${category}/${file}`,
     };
   });
