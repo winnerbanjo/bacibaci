@@ -46,7 +46,7 @@ export function SiteFooter() {
           <div className="mt-5 space-y-3 text-sm leading-7">
             <p>Phone: +234 808 799 4567</p>
             <p>Email: atelier@bacibaci.co</p>
-            <p>Address: Lekki Phase 1, Lagos, Nigeria</p>
+            <p>Location : Chevron , lekki , Lagos, Nigeria</p>
             <p>
               <Link href="https://instagram.com/bacibaciofficial" target="_blank">
                 Instagram
