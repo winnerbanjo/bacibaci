@@ -9,15 +9,17 @@ const rows = [
 export function SizeGuide({
   title = "Baci Baci size guide",
   description = "Use the chart below to match your closest UK size before placing an essentials order.",
+  compact = false,
 }: {
   title?: string;
   description?: string;
+  compact?: boolean;
 }) {
   return (
-    <section className="panel overflow-hidden p-6 sm:p-8">
+    <section className="panel overflow-hidden p-5 sm:p-6">
       <div className="max-w-xl">
         <p className="eyebrow">size guide</p>
-        <h2 className="display-title mt-3 text-3xl sm:text-4xl">{title}</h2>
+        <h2 className="display-title mt-3 text-2xl sm:text-3xl">{title}</h2>
         <p className="mt-3 text-[15px] leading-relaxed text-neutral-600">{description}</p>
       </div>
 
@@ -25,9 +27,12 @@ export function SizeGuide({
         <table className="min-w-full border-collapse text-left">
           <thead>
             <tr className="border-b border-[var(--color-line)] text-xs uppercase tracking-[0.2em] text-black/55">
-              <th className="min-w-28 py-4 pr-6 font-medium">Fit</th>
+              <th className={`${compact ? "min-w-20" : "min-w-28"} py-3 pr-4 font-medium`}>Fit</th>
               {columns.map((column) => (
-                <th key={column} className="min-w-24 py-4 pr-6 font-medium">
+                <th
+                  key={column}
+                  className={`${compact ? "min-w-20" : "min-w-24"} py-3 pr-4 font-medium`}
+                >
                   {column}
                 </th>
               ))}
@@ -36,11 +41,16 @@ export function SizeGuide({
           <tbody>
             {rows.map((row) => (
               <tr key={row.label} className="border-b border-[var(--color-line)] last:border-b-0">
-                <th className="py-4 pr-6 text-base font-medium uppercase tracking-[0.14em]">
+                <th
+                  className={`${compact ? "text-sm" : "text-base"} py-3 pr-4 font-medium uppercase tracking-[0.14em]`}
+                >
                   {row.label}
                 </th>
                 {row.values.map((value) => (
-                  <td key={`${row.label}-${value}`} className="py-4 pr-6 text-base text-neutral-600">
+                  <td
+                    key={`${row.label}-${value}`}
+                    className={`${compact ? "text-sm" : "text-base"} py-3 pr-4 text-neutral-600`}
+                  >
                     {value}
                   </td>
                 ))}
