@@ -6,12 +6,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const password = String(body.password ?? "").trim();
-    const passcode =
-      process.env.ADMIN_PASSCODE ??
-      process.env.NEXT_PUBLIC_ADMIN_PASSCODE ??
-      fallbackPasscode;
+    const envPasscodes = [
+      process.env.ADMIN_PASSCODE,
+      process.env.NEXT_PUBLIC_ADMIN_PASSCODE,
+      fallbackPasscode,
+    ]
+      .map((value) => String(value ?? "").trim())
+      .filter(Boolean);
 
-    if (!password || password !== passcode) {
+    if (!password || !envPasscodes.includes(password)) {
       return NextResponse.json({ error: "Wrong passcode" }, { status: 401 });
     }
 
