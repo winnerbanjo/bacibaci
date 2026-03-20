@@ -26,32 +26,29 @@ export default async function EssentialsPage() {
         <SectionReveal className="mb-10">
           <SizeGuide description="Use the bacibaci chart before opening any essentials product page." />
         </SectionReveal>
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:gap-8">
           {items.map((item) => (
             <SectionReveal key={item.slug}>
-            <article className="group">
-              <div className="editorial-image aspect-[4/5]">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover object-[center_top] transition-all duration-300"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <div className="mt-4 flex items-start justify-between gap-4">
-                <div>
-                  <h2 className="display-title text-3xl">{item.name}</h2>
-                  <p className="mt-3 text-sm text-[var(--color-muted)]">{formatPrice(item.price)}</p>
+              <article className="group">
+                <div className="editorial-image aspect-[4/5]">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover object-[center_top] transition-all duration-300"
+                    sizes="(max-width: 768px) 50vw, 50vw"
+                  />
                 </div>
-                <Link
-                  href={`/essentials/${item.slug}`}
-                  className="button-primary"
-                >
-                  Order Now
-                </Link>
-              </div>
-            </article>
+                <div className="mt-4 flex flex-col items-start gap-3">
+                  <div>
+                    <h2 className="display-title text-xl sm:text-3xl">{item.name}</h2>
+                    <p className="mt-2 text-sm text-[var(--color-muted)]">{formatPrice(item.price)}</p>
+                  </div>
+                  <Link href={`/essentials/${item.slug}`} className="button-primary w-full sm:w-auto">
+                    Order Now
+                  </Link>
+                </div>
+              </article>
             </SectionReveal>
           ))}
         </div>

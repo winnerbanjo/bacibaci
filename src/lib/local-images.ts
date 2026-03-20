@@ -42,6 +42,42 @@ async function readFolder(folder: string) {
   }
 }
 
+function extensionPriority(file: string) {
+  const ext = path.extname(file).toLowerCase();
+
+  switch (ext) {
+    case ".avif":
+      return 0;
+    case ".webp":
+      return 1;
+    case ".jpg":
+    case ".jpeg":
+      return 2;
+    case ".png":
+      return 3;
+    case ".heif":
+    case ".heic":
+      return 4;
+    default:
+      return 5;
+  }
+}
+
+function dedupeByBaseName(files: string[]) {
+  const preferredByBase = new Map<string, string>();
+
+  for (const file of files) {
+    const baseName = file.replace(/\.[^/.]+$/, "").toLowerCase();
+    const existing = preferredByBase.get(baseName);
+
+    if (!existing || extensionPriority(file) < extensionPriority(existing)) {
+      preferredByBase.set(baseName, file);
+    }
+  }
+
+  return [...preferredByBase.values()].sort((left, right) => left.localeCompare(right));
+}
+
 export async function getFrontpageImages(limit = 4): Promise<FrontpageImageItem[]> {
   const files = await readFolder("frontpage");
 
@@ -62,7 +98,7 @@ export async function getLocalCategoryItems(
   category: Exclude<ImageCategory, "hero" | "lookbook">
 ): Promise<LocalImageItem[]> {
   const allFiles = await readFolder(category);
-  const files =
+  const filteredFiles =
     category === "suits"
       ? allFiles.filter((file) => /suit/i.test(file))
       : category === "evening"
@@ -70,6 +106,7 @@ export async function getLocalCategoryItems(
         : category === "essentials"
           ? allFiles.filter((file) => /^IMG[_-]/i.test(file))
           : allFiles;
+  const files = dedupeByBaseName(filteredFiles);
 
   return files.map((file) => {
     const cleaned = toLabel(file);

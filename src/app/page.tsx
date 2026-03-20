@@ -67,7 +67,7 @@ export default async function HomePage() {
               </div>
             </SectionReveal>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
               {section.items.map((item) => (
                 <SectionReveal key={item.slug}>
                   <article className="group">
@@ -78,11 +78,11 @@ export default async function HomePage() {
                         fill
                         quality={100}
                         className="object-cover object-[center_top] transition-all duration-700 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 50vw, 50vw"
                       />
                     </div>
-                    <div className="mb-4 mt-12">
-                      <h3 className="display-title text-3xl">{item.name}</h3>
+                    <div className="mb-4 mt-5 sm:mt-8">
+                      <h3 className="display-title text-xl sm:text-3xl">{item.name}</h3>
                     </div>
                   </article>
                 </SectionReveal>
