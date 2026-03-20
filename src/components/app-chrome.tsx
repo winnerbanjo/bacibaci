@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
+import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -19,6 +20,7 @@ export function AppChrome({ children }: { children: ReactNode }) {
       <div className="grain fixed inset-0 -z-10 opacity-40" />
       <SiteHeader />
       <main className="flex-1">{children}</main>
+      <FloatingWhatsApp />
       <SiteFooter />
     </>
   );

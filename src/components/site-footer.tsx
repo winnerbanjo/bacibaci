@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { NewsletterForm } from "@/components/newsletter-form";
+import { WHATSAPP_NUMBER } from "@/lib/brand";
 
 export function SiteFooter() {
   return (
@@ -43,7 +44,7 @@ export function SiteFooter() {
         <div>
           <p className="eyebrow">Contact</p>
           <div className="mt-5 space-y-3 text-sm leading-7">
-            <p>Phone: +234 703 394 7449</p>
+            <p>Phone: +234 808 799 4567</p>
             <p>Email: atelier@bacibaci.co</p>
             <p>Address: Lekki Phase 1, Lagos, Nigeria</p>
             <p>
@@ -52,7 +53,7 @@ export function SiteFooter() {
               </Link>
             </p>
             <p>
-              <Link href="https://wa.me/2347033947449" target="_blank">
+              <Link href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank">
                 WhatsApp
               </Link>
             </p>
