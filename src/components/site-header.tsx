@@ -28,7 +28,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-[var(--color-line)] bg-[rgba(245,243,239,0.9)] backdrop-blur-md">
-        <div className="shell flex items-center justify-between gap-6 py-4">
+        <div className="shell grid grid-cols-[44px_1fr_44px] items-center gap-4 py-4 md:flex md:items-center md:justify-between md:gap-6">
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center border border-[var(--color-line)] md:hidden"
@@ -42,8 +42,15 @@ export function SiteHeader() {
             </span>
           </button>
 
-          <Link href="/" className="mx-auto md:mx-0">
-            <Image src="/images/logo.png" alt="BACI BACI" width={250} height={99} priority className="h-10 w-auto sm:h-12" />
+          <Link href="/" className="flex justify-center md:mx-0 md:justify-start">
+            <Image
+              src="/images/logo.png"
+              alt="BACI BACI"
+              width={250}
+              height={99}
+              priority
+              className="h-9 w-auto sm:h-10 md:h-10 lg:h-12"
+            />
           </Link>
 
           <nav className="hidden items-center gap-6 text-[11px] uppercase tracking-[0.2em] xl:flex">
@@ -53,7 +60,7 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
-
+          <div className="h-11 w-11 md:hidden" aria-hidden="true" />
         </div>
       </header>
 
