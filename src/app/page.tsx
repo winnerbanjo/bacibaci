@@ -77,7 +77,7 @@ export default async function HomePage() {
                         alt={item.name}
                         fill
                         quality={100}
-                        className="object-cover object-[center_top] transition-all duration-500"
+                        className="object-cover object-[center_top] transition-all duration-700 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
